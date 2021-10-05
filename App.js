@@ -1,21 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import Welcome from "./screens/Welcome";
+import Login from "./screens/Login";
+import Signup from "./screens/Signup";
+import { StatusBar } from "react-native";
+import BottomTabs from "./navigation/BottomTabs";
+import CardDetails from "./components/CardDetails";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
-export default function App() {
+const Stack = createSharedElementStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Main"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Main" component={BottomTabs} />
+        <Stack.Screen
+          name="CardDetails"
+          component={CardDetails}
+          sharedElements={(route) => [{ id: route.params.id }]}
+        />
+      </Stack.Navigator>
+      <StatusBar barStyle="light-content" />
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
